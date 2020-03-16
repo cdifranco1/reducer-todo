@@ -1,31 +1,9 @@
 import React, { useState, useReducer } from 'react';
-// import { todoReducer, initialState } from '../reducers/todoReducer';
+import { todoReducer, initialListState } from '../reducers/todoReducer';
 import { TodoForm } from './TodoForm'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 
 
-
-const todoReducer = (state, action) => {
-  switch(action.type){
-    case "ADD_ITEM":
-      return [
-        ...state,
-        action.payload
-      ]
-    case "MARK_COMPLETE":
-      const newState = state.map((item) => {
-        if (item.id === action.payload.id){
-          return {...item, completed: !action.payload.completed}
-        } else return item
-      })
-      console.log(state, newState)
-      return newState
-    default:
-      return state
-  }
-}
-
-const initialListState = []
 const intitialItemState = {
   item: '',
   completed: false,
@@ -50,6 +28,10 @@ export const TodoList = () => {
     dispatch({ type: "MARK_COMPLETE", payload: item})
   }
 
+  const clearComplete = () => {
+    dispatch({ type: "CLEAR_COMPLETE"})
+  }
+
   return (
     <div style={{padding: "2%"}}>
       <TodoForm onSubmit={handleSubmit} newItem={newItem} onChange={handleChange}/>
@@ -63,6 +45,7 @@ export const TodoList = () => {
           </ListGroupItem>
         )}
       </ListGroup>
+      <Button onClick={clearComplete} className="mt-5">Clear Completed</Button>
     </div>
   )
 }
